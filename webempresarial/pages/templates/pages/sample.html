@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Muestra{% endblock %}
+
+{% block content %}
+<section class="page-section about-heading">
+  <div class="container">
+    <div class="about-heading-content mbtm">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 mx-auto">
+          <div class="bg-faded rounded p-5 forced">
+            <h2 class="section-heading mb-4">
+              <span class="section-heading-lower">{{page.title}}</span>
+            </h2>
+            {% comment %} Para que el texto que coloquemos si muestre los saltos de linea
+            (enters en el bloque de texto) con el tag: linebreaks {% endcomment %}
+            {% comment %} con safe, decimos que es contenido seguro {% endcomment %}
+            <div class="section-content">{{page.content|safe}}</div>
+
+            {% comment %} Revisamos si el usuario está autenticado
+            para saber si puede o no editar está página {{user}}
+            {% endcomment %}
+            {% if user.is_authenticated %}
+            {% comment %}
+            
+            Para poder crear un enlace que nos lleve a la página del 
+            administrador y nos permita editar la app de pages lo hacemos
+            de la siguiente forma:
+            Nos referimos a la app admin, luego hacemos referencia
+            al modelo de la app pages y al modelo page que queremos editar
+            y la acción que queremos ejecutar separado con un guión bajo "_"
+            También pueden ser: add o delete en vez de change
+            ejemplo:
+            'admin:App_Model_Accion' obj.id 
+            
+            {% endcomment %}
+            <p><a href="{% url 'admin:pages_page_change' page.id %}">Editar</a></p>
+            {% endif %}
+
+            {% comment %} Todo lo de arriba del page se ve en el capitulo 48 {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

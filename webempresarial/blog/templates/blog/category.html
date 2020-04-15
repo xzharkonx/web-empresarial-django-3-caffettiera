@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+{% comment %} Revisar capitulo 43. {% endcomment %}
+{% comment %} Una vez configurada la vista
+Las relaciones existen en dos sentidos, aprovechando esto,
+django implementa una sintaxys generica en donde tu puedes
+hacer servir un modelo "category" , otro modelo relacionado
+con el "category.post", una barra baja "_set.all",
+y te irá a buscar todas las instancias del modelo relacionado
+con el primer modelo. {% endcomment %}
+
+{% comment %} {% for post in category.post_set.all %} {% endcomment %}
+
+{% comment %} Pero si en el modelo de esta app blog en Post, tiene un valor extra
+llamado related_name y un nombre en su campo (en este caso "get_posts",
+es como si fuera un nuevo campo en el modelo) categories podemos ocuparlo{% endcomment %}
+
+  {% for post in category.get_posts.all %}
+    <section class="page-section cta">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-9 mx-auto">
+            <div class="cta-innerv text-center rounded">
+              <h2 class="section-heading mb-5">
+                <span class="section-heading-upper">{{post.published|date:"SHORT_DATE_FORMAT"}}</span>
+                <span class="section-heading-lower">{{post.title}}</span>
+              </h2>
+              <p class="mb-0">
+                {% comment %} Como le indicamos que la imagen podría ser opcional, tendremos que advertirle
+                que podría ir vacía, entonces, si no va vacía mostrará el bloque de la imagen,
+                si no, no lo hará, si no agregamos esta sentencia nos botará un error. {% endcomment %}
+                {% if post.image.url != '' %}
+                  <img class="mx-auto d-flex rounded img-fluid mb-3 mb-lg-0" src="{{post.image.url}}" alt="">
+                {% endif %}
+              </p>
+              <p class="mb-0 mbt">
+                {% comment %} linebreaks sirve para que al darle enter (saltos de línea) en 
+                donde rellenamos la información (en el admin) del formulario del modelo {% endcomment %}
+                {{post.content|linebreaks}}
+              </p>
+              <p class="mb-0 mbt">
+                <span class="section-heading-under">Publicado por <em><b>{{post.author}}</b></em> en 
+                  {% comment %} <em><a href="#" class="link">General</a>, <a href="#" class="link">Ofertas</a></em>{% endcomment %}
+                 
+                  {% comment %} Como el campo de categorias esta enlazado a muchas categorias, esto quiere decir que
+                  es una lista de objetos, pero como el campo por si solo {{post.categories}} es digamos
+                  como la pura caja vacía sin hacer la consulta (queryset), por lo que al colocarlo como
+                  {{post.categories.all}} lo que hará será realizar la consulta y traerá todos esos objetos
+                  por lo que ahora solo bastará recorrelos con un for  {% endcomment %}
+                  <em>
+                  {% for category in post.categories.all %}
+                    {% comment %} Le decimos que imprima todas esas categorias y vaya colocando una "," para separar
+                    pero para que no coloque la "," al final, este for tiene 2 variables para detectar
+                    si estamos al principio o al final del for con: forloop.first y forloop.last, de
+                    esta forma evitaremos colocar la "," al final {% endcomment %}
+
+                    {% comment %} Ahora crearemos los enlaces a las categorias con sus respectivos urls
+                    pasandoselos por la url {% endcomment %}
+                    <a href="{% url 'category' category.id %}" class="link">{{category.name}}</a>{% if not forloop.last %},{% endif %}
+                  {% endfor%}
+                  </em>
+                </span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endfor %}
+{% endblock %}
+
+
+    

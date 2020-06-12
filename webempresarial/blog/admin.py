@@ -69,8 +69,9 @@ class PostAdmin(admin.ModelAdmin):
     def post_image(self, obj):
         #return mark_safe('<image src="%s" />' % obj.image)
         if obj.image: # Para adjuntar la imagen
-            return mark_safe('<img src="%s" width="75" height="60"/>' % obj.image.url+"<br>"+"URL: "+ 
-                '<a href="'+obj.image.url+'"/>'+obj.image.url+'</a>')   # Para adjuntar la URL de la imagen
+            return mark_safe( 
+                "URL: "+'<a href="'+obj.image.url+'"/>'+obj.image.url+'</a>'+"<br><br>"+
+                '<img src="%s" width="100" height="100"/>' % obj.image.url)   # Para adjuntar la URL de la imagen
         else:
             return 'No tiene imagen'
     

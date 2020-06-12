@@ -1,5 +1,8 @@
 from django.contrib import admin
 from .models import Category, Post
+# Importamos para que podamos visualizar las imagenes.
+from django.utils.safestring import mark_safe
+
 # Register your models here.
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'updated')
@@ -10,7 +13,7 @@ class PostAdmin(admin.ModelAdmin):
     #esto campos pero solo en modo lectura.
     readonly_fields = ('created', 'updated')
     #Para indicarle solo las columnas que queremos mostrar
-    list_display = ('title', 'author', 'published','post_categories')
+    list_display = ('title', 'author', 'published','post_categories','post_image')
     #Ordenar nuestros datos
     #Para 1 solo dato se deja la coma para 1 solo dato, por que si no,
     #no sabe el que es una Tupla
@@ -61,7 +64,19 @@ class PostAdmin(admin.ModelAdmin):
     #siguiente liga: 
     #https://stackoverflow.com/questions/47953705/how-do-i-use-allow-tags-in-django-2-0-admin
 
-
+    # Agregamos la imagen, recuerda anteponer el modelo post seguido de un guión bajo y el campo
+    # del modelo para acceder a el.
+    def post_image(self, obj):
+        #return mark_safe('<image src="%s" />' % obj.image)
+        if obj.image: # Para adjuntar la imagen
+            return mark_safe('<img src="%s" width="75" height="60"/>' % obj.image.url+"<br>"+"URL: "+ 
+                '<a href="'+obj.image.url+'"/>'+obj.image.url+'</a>')   # Para adjuntar la URL de la imagen
+        else:
+            return 'No tiene imagen'
+    
+    #image.allow_tags = True #redundant
+    #image.admin_order_field = 'name'
+    post_image.short_description = "Imagen"
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)

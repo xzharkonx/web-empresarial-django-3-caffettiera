@@ -25,6 +25,9 @@ SECRET_KEY = '%a#!t$rve*@pxg!4w_9g61^zto^r@!gaww@=w!i8v%$+psu%2h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Podemos utilizar ngro para ver esta página en un servidor de prueba
+# Solo tenemos que registrar la url que nos da.
+# ALLOWED_HOSTS = ['d70d9838a408.ngrok.io']
 ALLOWED_HOSTS = []
 
 
@@ -61,7 +64,9 @@ ROOT_URLCONF = 'webempresa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # Añadimos el directorio de templates para editar el template del administrador
+        # y así poder añadir una imagen.
+        'DIRS': [os.path.join(BASE_DIR,'templates/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,23 +140,34 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+# Con este STATIC irá a búscar el directorio static.
+# Solo para producción...
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# Para que lea imagenes de forma global y no necesariamente 
+# que las imagenes estén dentro de una app. 
+# Hacemos esto aquí para cargar archivos staticos en el admin y así 
+# que cargue las imagenes que le pongamos.
+STATICFILES_DIRS = [
+  os.path.join(BASE_DIR, "static"),
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #Ckeditor
 #Nos ayudará a agregar herramientas de edición de texto.
-#Esto para los campos grandes de texto
-#"Lo que ves es lo que obtienes wezewek"
+#Esto para los campos grandes de texto.
+# Del inglés "What You See Is What You Get" o "Lo que ves es lo que consigues".
 #Algunas configuraciones: https://docs.hektorprofe.net/django/web-empresarial/personalizando-panel-administrador-parte-3/
 #Repositorio: https://github.com/django-ckeditor/django-ckeditor 
 #'toolbar': None, #Nos saldrán todas las herramientas.
+# El campo que tendrá el contenido del texto deberá tener el filtro safe: obj.content|safe
 
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
+            ['Bold', 'Italic ', 'Underline'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 
              'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
             ['Link', 'Unlink']
@@ -164,3 +180,13 @@ EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = 'b9053d48194bb9'
 EMAIL_HOST_PASSWORD = '00996310fca9de'
 EMAIL_PORT = '2525'
+
+
+
+#Email config Google
+# Link info: https://support.google.com/mail/answer/7126229?visit_id=637276974276465241-129629702&hl=es-419&rd=1
+# Se necesitará autenticación STL para que funcione.
+# EMAIL_HOST = 'smtp.gmail.io'
+# EMAIL_HOST_USER = 'explotaideas@gmail.com'
+# EMAIL_HOST_PASSWORD = 'password'
+# EMAIL_PORT = '587'

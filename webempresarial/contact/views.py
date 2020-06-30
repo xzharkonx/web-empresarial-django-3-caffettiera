@@ -1,6 +1,9 @@
 #Importamos redirect para redireccionar la view
 from django.shortcuts import render, redirect
-#Importamos reverse para que la url sea dinámica
+#Importamos reverse para que la url pase de estar
+#estatica y se vuelva dinámica, es decir que se cree
+#una url que no hemos creado, y esta varía por el parametro
+#que le pasamos para comprobar si se envio bien o no el formulario.
 from django.urls import reverse
 #Importamos una librería para el correo,
 #sirve para crear la estructura del mensaje y poder enviarlo.
@@ -13,7 +16,8 @@ def contact(request):
     #Para comprobar que tipo de petición nos envía.
     #print("Tipo de petición: {}".format(request.method))
     #Instanciamos el formulario y se lo enviamos al template por
-    #medio del contexto.
+    #medio del contexto. Se instancia de esta forma para que
+    #no envie datos al Template, solo la estructura del formulario.
     contact_form = ContactForm()
 
     if request.method == "POST":
@@ -29,7 +33,8 @@ def contact(request):
         if contact_form.is_valid():
             #Que podemos hacer si estamos seguros de que todos
             #los campos son correctos, pues podemos recuperarlos.
-            #y si no hay ninguno que nos devuelva una cadena vacía.
+            #y si no hay ninguno que nos devuelva una cadena vacía,
+            #esa cadena vacia es el segunto parametro de la función.
             name = request.POST.get('name', '')
             email = request.POST.get('email', '')
             content = request.POST.get('content', '')
@@ -41,13 +46,14 @@ def contact(request):
 
             #Enviamos el correo y redireccionamos.
             email = EmailMessage(
-                "La caffettiera: Nuevo mensaje de contacto", #asunto,
-                "De {} <{}>\n\nEscribió:\n\n{}".format(name,email,content),#cuerpo,
+                "La caffettiera: Nuevo mensaje de contacto",                 #asunto,
+                "De {} <{}>\n\nEscribió:\n\n{}".format(name,email,content),  #cuerpo/mensaje,
                 #Se pone un correo que esta enviando automaticamente, puede ser
                 #cambiado por el de la empresa.
-                "no-contestar@inbox.mailtrap.io",#email_origen,
+                "no-contestar@inbox.mailtrap.io",                            #email_origen/destinatario,
+                # "explotaideas@gmail.com",                            #email_origen/destinatario,
                 #Se enviará a una lista de correos, en esta caso solo al mio.
-                ['xzharkonx@gmail.com'],#email_destino,
+                ['xzharkonx@gmail.com'],                                     #email_destino,
                 #Sirve para responderle aútomaticamente
                 reply_to=[email]
 

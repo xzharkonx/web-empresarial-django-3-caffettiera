@@ -46,3 +46,51 @@ urlpatterns = [
 if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# Custom titles for admin
+
+# Cambiar el titulo del admin.
+admin.site.site_header = "La Caffetiera"
+# Cambiar el subtitulo del admin.
+admin.site.index_title = "Panel de administrador"
+# Cambiar el title del admin.
+admin.site.site_title = "La Caffetiera"
+
+# Para colocar un logo es un poco más complejo y requiere cambiar los templates
+# del panel de administrador
+# Vamos a indicarle a django que los búsque en un directorio especifico donde vamos a poner
+# los que queremos sobreescribir
+# En la raíz del todo, crearemos una carpeta llamada templates
+# Luego en el archivo settings, configurar la parte de TEMPLATES donde están los 'DIRS' y añadir
+# la url en este caso será 'DIRS': [.os.path.join(BASE_DIR,'templates/')],
+
+# Una vez añadida y creada la carpeta en la raíz del proyecto llamada "templates"
+# Podemos ir a burcar el template original del administrador según el entorno (environment) en:
+# C:\Users\zhark\Anaconda3\envs\django3\Lib\site-packages\django\contrib\admin\templates\admin
+# Y elegir el archivo base_site.html para copiarlo y dentro de la carpeta que creamos de templates
+# crearemos otra llamada "admin" y dentro de ella pegaremos este template.
+# De manera que ahora se pueda abrir y que nosotros podamos sobreescribir el código.
+# También puede añadirse el archivo base.html que esta dentro de esa carpeta también.
+
+# Entonces personalizaremos ese archivo.
+
+# Si queremos añadir en nuestro caso una imagen al admin, tendremos que crear una carpeta en la raíz
+# llamada static donde alamacenaremos la imagenes.
+# Ahora solo la cargaremos, todo esto en la raíz del directorio dentro de la carpeta templates/admin/base_site.html
+# Pero nos toparemos con un problema de urls static, para solucionarlo hay que añadir a settings.py donde está la sección
+# de los archivos estáticos colocar lo siguiente:
+# Le añadiremos los ficheros donde tiene que ir a buscar ficheros estáticos a niel global que no forman parte de una app
+# en especifico.
+# STATICFILES_DIRS = [
+#   os.path.join(BASE_DIR, "static"),
+# ]
+
+# Con esto ya habrá quedado nuestro logo.
+
+# Ahora para agregar estilos en nuestro admin en el archivo templates/admin/base_site.html, podemos hacerlo en un bloque llamado:
+# {% block extrastyle %}
+# {% endblock %}
+# Y dentro colocar nuestros estilos css.
+# Buscamos por el inspector en la página del admin para saber a que ids afectar para colocarle
+# los estilos a esos bloques.(Revisar el archivo).

@@ -25,3 +25,5 @@ class ContactForm(forms.Form):
     ), min_length=10, max_length=1000)
 
     #Ahora hay que pasarselo al template desde la view.
+    # Para más detalles ver el otro proyecto de webplayground, en el modelo pages,
+    # en script .forms

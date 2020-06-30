@@ -125,9 +125,9 @@
         que también agrege el nombre o titulo de la página a la url (con guiones si son más de 2 palabras)
         esto nos ayudara a mejorar el seo, también tenemos que modificar
         las urls de la app page y en la view{% endcomment %}
-        {%for page in page_list%}
+        {% for page in page_list %}
         	<a href="{% url 'page' page.id page.title|slugify %}" class="link">{{page.title}}</a> {% if not forloop.last %}·{% endif %}
-        {%endfor%}
+        {% endfor %}
         <p class="m-0 mbt1">&copy; La Caffettiera 2018</p>
       </div>
 	</footer>

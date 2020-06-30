@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+<!-- Cargamos los archivos estáticos -->
+{% load static %}
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+    <!-- Buscamos por el inspector en la página del admin para saber a que ids afectar para colocarle
+    los estilos a esos bloques. -->
+    <style>
+        #header { background: #4c2d1b;}
+        .module>table>caption { background: #4c2d1b;}
+    </style>
+{% endblock %}
+
+{% block branding %}
+<!-- <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1> -->
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'logo.png' %}" height="40px" alt="La caffetiera-logo">        
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

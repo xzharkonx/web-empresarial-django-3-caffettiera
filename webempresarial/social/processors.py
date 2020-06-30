@@ -14,7 +14,7 @@ from .models import Link
 def ctx_dict(request):
     ctx = {}
     links = Link.objects.all()
-
+    # Se crea un nuevo valor en el contexto al agregarlo así.
     for link in links:
         ctx[link.key] = link.url
 

@@ -1,5 +1,5 @@
 sqlite==3.25.3
-django==2.0.2
+django==2.2.24
 pylint
 psycopg2
 Pillow==5.0.0
